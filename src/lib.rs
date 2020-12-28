@@ -1,11 +1,11 @@
-//! # minigrep
-//! `minigrep` is a collection of utilities replicating grep.
+//! # minigrep_aclinal
+//! `minigrep_aclinal` is a collection of utilities replicating grep.
 
 use std::env;
 use std::error::Error;
 use std::fs;
 
-/// Configuration for a minigrep run.
+/// Configuration for a minigrep_aclinal run.
 pub struct Config {
     pub query: String,
     pub filename: String,
@@ -13,7 +13,7 @@ pub struct Config {
 }
 
 impl Config {
-    /// Creates a new minigrep configuration using environment args.
+    /// Creates a new minigrep_aclinal configuration using environment args.
     pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
         args.next();
 
@@ -36,7 +36,7 @@ impl Config {
     }
 }
 
-/// Run a minigrep for a given config.
+/// Run a minigrep_aclinal for a given config.
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
 
@@ -54,9 +54,9 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 /// Perform a case-sensitive search.
-/// 
+///
 /// # Examples
-/// 
+///
 /// ```
 /// let query = "duct";
 /// let contents = "\
@@ -64,7 +64,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 /// safe, fast, productive.
 /// Pick three.
 /// Duct tape.";
-/// assert_eq!(vec!["safe, fast, productive."], minigrep::search(query, contents));
+/// assert_eq!(vec!["safe, fast, productive."], minigrep_aclinal::search(query, contents));
 /// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
@@ -74,9 +74,9 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 }
 
 /// Perform a case-insensitive search.
-/// 
+///
 /// # Examples
-/// 
+///
 /// ```
 /// let query = "rUsT";
 /// let contents = "\
@@ -86,7 +86,7 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 /// Trust me.";
 /// assert_eq!(
 ///     vec!["Rust:", "Trust me."],
-///     minigrep::search_case_insensitive(query, contents)
+///     minigrep_aclinal::search_case_insensitive(query, contents)
 /// );
 /// ```
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
