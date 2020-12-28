@@ -1,7 +1,11 @@
+//! # minigrep
+//! `minigrep` is a collection of utilities replicating grep.
+
 use std::env;
 use std::error::Error;
 use std::fs;
 
+/// Configuration for a minigrep run.
 pub struct Config {
     pub query: String,
     pub filename: String,
@@ -9,6 +13,7 @@ pub struct Config {
 }
 
 impl Config {
+    /// Creates a new minigrep configuration using environment args.
     pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
         args.next();
 
@@ -31,6 +36,7 @@ impl Config {
     }
 }
 
+/// Run a minigrep for a given config.
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
 
@@ -47,6 +53,19 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Perform a case-sensitive search.
+/// 
+/// # Examples
+/// 
+/// ```
+/// let query = "duct";
+/// let contents = "\
+/// Rust:
+/// safe, fast, productive.
+/// Pick three.
+/// Duct tape.";
+/// assert_eq!(vec!["safe, fast, productive."], minigrep::search(query, contents));
+/// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
         .lines()
@@ -54,6 +73,22 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
         .collect()
 }
 
+/// Perform a case-insensitive search.
+/// 
+/// # Examples
+/// 
+/// ```
+/// let query = "rUsT";
+/// let contents = "\
+/// Rust:
+/// safe, fast, productive.
+/// Pick three.
+/// Trust me.";
+/// assert_eq!(
+///     vec!["Rust:", "Trust me."],
+///     minigrep::search_case_insensitive(query, contents)
+/// );
+/// ```
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
     contents
